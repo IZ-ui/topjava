@@ -7,9 +7,9 @@ public class MealTo {
 
     private final LocalDateTime dateTime;
 
-    private String description;
+    private final String description;
 
-    private int calories;
+    private final int calories;
 
     private final boolean excess;
 
@@ -52,13 +52,5 @@ public class MealTo {
 
     public boolean isExcess() {
         return excess;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
     }
 }

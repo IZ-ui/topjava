@@ -11,7 +11,7 @@
 <hr>
 <h2>Meals</h2>
 <br/>
-<a href="add-meal-form.jsp">Add Meal</a>
+<a href="${pageContext.request.contextPath}/add-or-update-meal-form.jsp">Add Meal</a>
 
 <table border="1">
 
@@ -27,14 +27,14 @@
 
         <!-- set up a link for each meal -->
         <c:url var="updateLink" value="meals">
-            <c:param name="command" value="LOAD" />
-            <c:param name="mealId" value="${mealTo.id}" />
+            <c:param name="command" value="load"/>
+            <c:param name="mealId" value="${mealTo.id}"/>
         </c:url>
 
         <!-- set up a link to delete a meal -->
         <c:url var="deleteLink" value="meals">
-            <c:param name="command" value="DELETE" />
-            <c:param name="mealId" value="${mealTo.id}" />
+            <c:param name="command" value="delete"/>
+            <c:param name="mealId" value="${mealTo.id}"/>
         </c:url>
 
         <tr style="color: ${mealTo.excess ? "red" : "green"}">
