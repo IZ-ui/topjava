@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -8,7 +9,7 @@
 
 <body>
 
-<h3>Add/Update Meal</h3>
+<h3><c:out value="${meal ==null ? 'Add' : 'Update'}" /> Meal</h3>
 
 <form action="meals" method="POST">
 
@@ -29,7 +30,7 @@
         </tr>
 
         <tr>
-            <td><label>Calories:</label></td>
+            <td><label>Calories:${meal.calories==100 ? tru : fals}</label></td>
             <td><input type="number" name="calories"
                        value="${meal.calories}"/></td>
         </tr>

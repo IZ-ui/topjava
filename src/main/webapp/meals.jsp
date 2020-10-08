@@ -11,7 +11,10 @@
 <hr>
 <h2>Meals</h2>
 <br/>
-<a href="${pageContext.request.contextPath}/add-or-update-meal-form.jsp">Add Meal</a>
+<c:url var="addLink" value="meals">
+    <c:param name="command" value="load"/>
+</c:url>
+<a href="${addLink}">Add Meal</a>
 
 <table border="1">
 

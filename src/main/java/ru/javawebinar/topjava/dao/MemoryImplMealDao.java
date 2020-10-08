@@ -11,35 +11,42 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MemoryImplMealDao implements MealDao {
-    private static Map<Integer, Meal> mapMeals = new ConcurrentHashMap<>();
-    public static final AtomicInteger TOTAL_ID = new AtomicInteger(1);
+    private Map<Integer, Meal> mapMeals = new ConcurrentHashMap<>();
+    private final AtomicInteger totalId = new AtomicInteger(1);
 
-    static {
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
-        mapMeals.put(TOTAL_ID.getAndIncrement(), new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
-        mapMeals.forEach((k, v) -> v.setId(k));
+    {
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
+        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
     }
 
-    public List<Meal> getMeals() {
+    public List<Meal> getAll() {
         return new ArrayList<>(mapMeals.values());
     }
 
-    public synchronized void addMeal(Meal meal) {
-        int id = meal.getId() == 0 ? TOTAL_ID.getAndIncrement() : meal.getId();
-        meal.setId(id);
-        mapMeals.put(id, meal);
+    public synchronized Meal save(Meal meal) {
+        int id = meal.getId();
+        if (id == 0) {
+            id = totalId.getAndIncrement();
+            meal.setId(id);
+            mapMeals.put(id, meal);
+        } else {
+            if (mapMeals.replace(meal.getId(), meal) == null) {
+                return null;
+            }
+        }
+        return meal;
     }
 
-    public Meal getMeal(int mealId) {
+    public Meal get(int mealId) {
         return mapMeals.get(mealId);
     }
 
-    public void deleteMeal(int id) {
+    public void delete(int id) {
         mapMeals.remove(id);
     }
 }

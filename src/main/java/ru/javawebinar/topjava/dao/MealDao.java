@@ -1,17 +1,15 @@
 package ru.javawebinar.topjava.dao;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealTo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MealDao {
-    List<Meal> getMeals();
+    List<Meal> getAll();
 
-    void addMeal(Meal meal);
+    Meal save(Meal meal);
 
-    Meal getMeal(int id);
+    Meal get(int id);
 
-    void deleteMeal(int id);
+    void delete(int id);
 }
