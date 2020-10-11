@@ -23,15 +23,23 @@
     <h2>Meals</h2>
 
 
-    <form method="get" action="meals?action=filter">
+    <form method="get" action="meals">
         <input type="hidden" name="action" value="filter">
         <dl>
-            <dt>Start Date:</dt>
-            <dd><input type="datetime-local" name="startTime" required></dd>
+            <dt>Start date:</dt>
+            <dd><input type="date" value="${startDate}" name="startDate"></dd>
         </dl>
         <dl>
             <dt>End date:</dt>
-            <dd><input type="datetime-local" name="endTime" required></dd>
+            <dd><input type="date" value="${endDate}" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>Start time:</dt>
+            <dd><input type="time" value="${startTime}" name="startTime"></dd>
+        </dl>
+        <dl>
+            <dt>End time:</dt>
+            <dd><input type="time" value="${endTime}" name="endTime"></dd>
         </dl>
         <button type="submit">Filter</button>
 

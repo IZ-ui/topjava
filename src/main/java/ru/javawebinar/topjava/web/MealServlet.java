@@ -7,13 +7,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -24,11 +25,9 @@ public class MealServlet extends HttpServlet {
     private MealRestController mealRestController;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init() {
         appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
-        {
-            mealRestController = appCtx.getBean(MealRestController.class);
-        }
+        mealRestController = appCtx.getBean(MealRestController.class);
     }
 
     @Override
@@ -47,7 +46,6 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-//        repository.save(meal, SecurityUtil.authUserId());
         if (meal.isNew()) {
             mealRestController.create(meal);
         } else {
@@ -64,7 +62,6 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-//                repository.delete(id, SecurityUtil.authUserId());
                 mealRestController.delete(id);
                 response.sendRedirect("meals");
                 break;
@@ -72,24 +69,23 @@ public class MealServlet extends HttpServlet {
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-//                        repository.get(getId(request), SecurityUtil.authUserId());
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "filter":
                 log.info("filter");
-                request.setAttribute("meals",
-//                        MealsUtil.getTos(repository.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
-                        mealRestController.getFiltered(LocalDateTime.parse(request.getParameter("startTime")).toLocalTime()
-                                , LocalDateTime.parse(request.getParameter("endTime")).toLocalTime()));
+                LocalDate startDate = getDate(request, "startDate");
+                LocalDate endDate = getDate(request, "endDate");
+                LocalTime startTime = getTime(request, "startTime");
+                LocalTime endTime = getTime(request, "endTime");
+                request.setAttribute("meals", mealRestController.getFiltered(startDate, endDate, startTime, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
                 request.setAttribute("meals",
-//                        MealsUtil.getTos(repository.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
                         mealRestController.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
@@ -99,5 +95,16 @@ public class MealServlet extends HttpServlet {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
+    }
+
+    private LocalDate getDate(HttpServletRequest request, String value) {
+        String temp = request.getParameter(value);
+        return temp.equals("") ? null : LocalDate.parse(temp);
+    }
+
+    private LocalTime getTime(HttpServletRequest request, String value) {
+        String temp = request.getParameter(value);
+        System.out.println(temp);
+        return temp.equals("") ? null : LocalTime.parse(temp);
     }
 }
