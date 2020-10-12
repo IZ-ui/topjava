@@ -99,12 +99,11 @@ public class MealServlet extends HttpServlet {
 
     private LocalDate getDate(HttpServletRequest request, String value) {
         String temp = request.getParameter(value);
-        return temp.equals("") ? null : LocalDate.parse(temp);
+        return temp == null || temp.equals("") ? null : LocalDate.parse(temp);
     }
 
     private LocalTime getTime(HttpServletRequest request, String value) {
         String temp = request.getParameter(value);
-        System.out.println(temp);
-        return temp.equals("") ? null : LocalTime.parse(temp);
+        return temp == null || temp.equals("") ? null : LocalTime.parse(temp);
     }
 }

@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.service;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.util.DateTimeUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +30,7 @@ public class MealService {
     }
 
     public List<Meal> getAll(int userId) {
-        return repository.getAllByPredicate(userId, meal -> true);
+        return repository.getAllByPredicate(userId, LocalDate.MIN, LocalDate.MAX);
     }
 
     public void update(Meal meal, int userId) {
@@ -39,6 +38,6 @@ public class MealService {
     }
 
     public List<Meal> getFiltered(int userId, LocalDate startDate, LocalDate endDate) {
-        return repository.getAllByPredicate(userId, meal -> DateTimeUtil.isBetweenHalfOpenDate(meal.getDate(), startDate, endDate));
+        return repository.getAllByPredicate(userId, startDate, endDate);
     }
 }
