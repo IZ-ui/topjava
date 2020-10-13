@@ -30,7 +30,7 @@ public class MealService {
     }
 
     public List<Meal> getAll(int userId) {
-        return repository.getAllByPredicate(userId, LocalDate.MIN, LocalDate.MAX);
+        return repository.getAll(userId);
     }
 
     public void update(Meal meal, int userId) {
@@ -38,6 +38,6 @@ public class MealService {
     }
 
     public List<Meal> getFiltered(int userId, LocalDate startDate, LocalDate endDate) {
-        return repository.getAllByPredicate(userId, startDate, endDate);
+        return repository.getFiltered(userId, startDate, endDate);
     }
 }

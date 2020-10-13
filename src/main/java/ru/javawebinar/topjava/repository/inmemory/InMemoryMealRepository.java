@@ -50,14 +50,20 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAllByPredicate(int userId, LocalDate startDate, LocalDate endDate) {
+    public List<Meal> getAll(int userId) {
+        return getAllByPredicate(userId, meal -> true);
+    }
+
+    @Override
+    public List<Meal> getFiltered(int userId, LocalDate startDate, LocalDate endDate) {
+        return getAllByPredicate(userId, meal -> DateTimeUtil.isBetween(meal.getDate(),startDate,endDate));
+    }
+
+    private List<Meal> getAllByPredicate(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> meals = repository.get(userId);
         if (meals == null) {
             return new ArrayList<>();
         }
-        Predicate<Meal> filter = startDate == LocalDate.MIN && endDate == LocalDate.MAX ?
-                meal -> true :
-                meal -> DateTimeUtil.isBetween(meal.getDate(), startDate, endDate);
         return meals.values().stream()
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
