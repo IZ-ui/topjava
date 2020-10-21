@@ -20,7 +20,7 @@ public class MealTestData {
     public static final Meal userMeal6 = new Meal(MEAL_ID + 5, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "zavtrakUser", 500);
     public static final Meal userMeal7 = new Meal(MEAL_ID + 6, LocalDateTime.of(2020, Month.JANUARY, 30, 0, 0), "edanagraniUser", 100);
     public static final Meal adminMeal1 = new Meal(MEAL_ID + 7, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "obedAdmin", 500);
-    public static final Meal adminMeal2 = new Meal(MEAL_ID + 8, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "uzhinAdmin", 1000);
+    public static final Meal adminMeal2 = new Meal(MEAL_ID + 8, LocalDateTime.of(2020, Month.JANUARY, 30, 19, 0), "uzhinAdmin", 1000);
 
     public static Meal getNew() {
         return new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 30, 11, 0), "newMeal", 555);
@@ -42,6 +42,6 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 }

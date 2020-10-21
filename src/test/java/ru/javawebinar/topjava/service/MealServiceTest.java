@@ -22,6 +22,7 @@ import static ru.javawebinar.topjava.MealTestData.*;
 
 
 @ContextConfiguration({
+        "classpath:spring/spring.xml",
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
 })

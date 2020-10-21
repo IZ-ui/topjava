@@ -8,7 +8,6 @@
         <bean class="ru.javawebinar.topjava.service.UserService">
             <constructor-arg name="repository" ref="inmemoryUserRepository"/>
         </bean>-->
-    <import resource="spring.xml"/>
 
     <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
 
