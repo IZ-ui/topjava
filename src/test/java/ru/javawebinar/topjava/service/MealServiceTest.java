@@ -34,29 +34,24 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
     private static final Logger log = getLogger(MealServiceTest.class);
-    private static String generalInfo;
+    private static final StringBuilder generalInfo = new StringBuilder();
     @Autowired
     private MealService service;
 
     @Rule
     public Stopwatch stopwatch = new Stopwatch() {
-        private void logInfo(Description description, long nanos) {
-            String testName = description.getMethodName();
-            String info = String.format("%-25s %d ms",
-                    testName, TimeUnit.NANOSECONDS.toMillis(nanos));
-            log.info(info);
-            generalInfo += info + "\n";
-        }
-
         @Override
         protected void finished(long nanos, Description description) {
-            logInfo(description, nanos);
+            String info = String.format("%-25s %d ms",
+                    description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
+            log.info(info);
+            generalInfo.append(info).append("\n");
         }
     };
 
     @AfterClass
     public static void info() {
-        log.info(generalInfo);
+        log.info(generalInfo.toString());
     }
 
     @Test
