@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
@@ -19,11 +19,14 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Query("DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId")
     int delete(@Param("id") int id, @Param("userId") int userId);
 
-    Optional<Meal> findByIdAndUserId(int id, int userId);
+    Meal findByIdAndUser(int id, User user);
 
-    List<Meal> findAllByUserId(Sort sort, int userId);
+    List<Meal> findAllByUser(Sort sort, User user);
 
     @Query(name = Meal.GET_BETWEEN)
     List<Meal> getBetweenHalfOpen(@Param("userId") int userId, @Param("startDateTime") LocalDateTime startDateTime,
                                   @Param("endDateTime") LocalDateTime endDateTime);
+
+    @Query("SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.id=:id AND m.user.id=:userId")
+    Meal findWithUser(@Param("id") int id, @Param("userId") int userId);
 }
