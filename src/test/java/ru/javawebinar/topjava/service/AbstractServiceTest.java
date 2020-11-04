@@ -43,7 +43,7 @@ public abstract class AbstractServiceTest {
 
     @BeforeClass
     public static void restart() {
-        results = new StringBuilder();
+        results.setLength(0);
     }
 
     @AfterClass

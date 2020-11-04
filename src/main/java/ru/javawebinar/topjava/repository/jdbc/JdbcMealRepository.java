@@ -55,9 +55,11 @@ public abstract class JdbcMealRepository implements MealRepository {
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
+                .addValue("date_time", getCorrectTime(meal.getDateTime()))
                 .addValue("user_id", userId);
     }
+
+    protected abstract <T> T getCorrectTime(LocalDateTime localDateTime);
 
     @Override
     public boolean delete(int id, int userId) {
@@ -81,6 +83,6 @@ public abstract class JdbcMealRepository implements MealRepository {
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time >=  ? AND date_time < ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDateTime, endDateTime);
+                ROW_MAPPER, userId, getCorrectTime(startDateTime), getCorrectTime(endDateTime));
     }
 }
