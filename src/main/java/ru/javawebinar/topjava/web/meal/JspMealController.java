@@ -69,15 +69,12 @@ public class JspMealController extends AbstractMealController {
         LocalDateTime dateTime = LocalDateTime.parse(request.getParameter("dateTime"));
         String description = request.getParameter("description");
         int calories = Integer.parseInt(request.getParameter("calories"));
-        Meal meal;
+        Meal meal = new Meal(dateTime, description, calories);
         if (!StringUtils.hasText(id)) {
-            meal = new Meal(dateTime, description, calories);
             create(meal);
         } else {
-            meal = new Meal(dateTime, description, calories);
             update(meal, getId(request));
         }
-        model.addAttribute("meals", getAll());
         return "redirect:/meals";
     }
 
