@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.SecurityUtil;
@@ -85,6 +86,7 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
+        List<MealTo> meals = getTos(List.of(meal6),SecurityUtil.authUserCaloriesPerDay());
         perform(MockMvcRequestBuilders.get(REST_URL + "filter")
                 .param("startDate", "2020-01-31").param("startTime", "13:00")
                 .param("endDate", "2020-01-31").param("endTime", "20:00"))

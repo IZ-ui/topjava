@@ -401,6 +401,7 @@
           <con:request/>
           <con:originalUri>http://localhost/topjava/rest/meals</con:originalUri>
           <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
             <con:authType>No Authorization</con:authType>
           </con:credentials>
           <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
@@ -430,6 +431,7 @@
           <con:request/>
           <con:originalUri>http://localhost/topjava/rest/mealshttp:/localhost:8080/topjava/rest/meals/filter</con:originalUri>
           <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
             <con:authType>No Authorization</con:authType>
           </con:credentials>
           <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
