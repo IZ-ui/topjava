@@ -23,7 +23,9 @@ $.ajaxSetup({
             var json = JSON.parse(stringData);
             if (typeof json === 'object') {
                 $(json).each(function () {
-                    this.dateTime = this.dateTime.substr(0, 16).replace('T', ' ');
+                    if (this.hasOwnProperty('dateTime')) {
+                        this.dateTime = this.dateTime.substr(0, 16).replace('T', ' ');
+                    }
                 });
             }
             return json;
@@ -64,6 +66,8 @@ $(function () {
             $(row).attr("data-mealExcess", data.excess);
         },
     });
+
+    $.datetimepicker.setLocale(localeCode);
 
 //  http://xdsoft.net/jqplugins/datetimepicker/
     var startDate = $('#startDate');
